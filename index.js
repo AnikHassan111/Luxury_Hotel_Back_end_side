@@ -76,8 +76,6 @@ async function run() {
       res.send(result);
     });
 
-    //Hotel view Pic End
-
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
