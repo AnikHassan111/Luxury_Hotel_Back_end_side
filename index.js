@@ -1,14 +1,22 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
+const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 5000;
 
 // middleware
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
 
 const uri = `mongodb+srv://hotelroomuser:kcR6HdvPRal0Cjcc@cluster0.wnl4pp8.mongodb.net/?retryWrites=true&w=majority`;
 
@@ -34,9 +42,18 @@ async function run() {
     const FeaturedRoom = client.db("MyHotel").collection("featuredroom");
 
     //Jwt Function
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 7);
     app.post("/jwt", async (req, res) => {
       const body = req.body;
-      console.log(body);
+      const token = jwt.sign(body, process.env.TOKEN, { expiresIn: "48hr" });
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+          expires: expirationDate,
+        })
+        .send({ message: "Success", token });
     });
     //Room Page Api
     app.get("/room", async (req, res) => {
