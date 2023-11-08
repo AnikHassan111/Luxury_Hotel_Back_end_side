@@ -30,6 +30,7 @@ async function run() {
       .collection("hotelviewpic");
     const RoomPage = client.db("MyHotel").collection("roomCollection");
     const RoomBooking = client.db("MyHotel").collection("booking");
+    const FeaturedRoom = client.db("MyHotel").collection("featuredroom");
 
     //Room Page Api
     app.get("/room", async (req, res) => {
