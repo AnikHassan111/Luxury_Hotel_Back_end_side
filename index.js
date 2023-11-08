@@ -55,6 +55,13 @@ async function run() {
       const result = await RoomBooking.find().toArray();
       res.send(result);
     });
+
+    app.delete("/bookingDelete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await RoomBooking.deleteOne(query);
+      res.send(result);
+    });
     //Hotel view Pic Start
     app.get("/hotelviewpic", async (req, res) => {
       const result = await hotelViewPicCollection.find().toArray();
