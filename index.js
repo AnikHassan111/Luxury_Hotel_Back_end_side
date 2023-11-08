@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
@@ -32,6 +33,11 @@ async function run() {
     const RoomBooking = client.db("MyHotel").collection("booking");
     const FeaturedRoom = client.db("MyHotel").collection("featuredroom");
 
+    //Jwt Function
+    app.post("/jwt", async (req, res) => {
+      const body = req.body;
+      console.log(body);
+    });
     //Room Page Api
     app.get("/room", async (req, res) => {
       const result = await RoomPage.find().toArray();
