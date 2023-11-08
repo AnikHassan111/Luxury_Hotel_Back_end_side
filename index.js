@@ -65,6 +65,10 @@ async function run() {
     });
 
     // Featured Room
+    app.get("/featuredroom", async (req, res) => {
+      const result = await FeaturedRoom.find().toArray();
+      res.send(result);
+    });
 
     //Hotel view Pic Start
     app.get("/hotelviewpic", async (req, res) => {
