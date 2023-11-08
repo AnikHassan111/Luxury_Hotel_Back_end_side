@@ -47,8 +47,13 @@ async function run() {
     //Hotel Booking
     app.post("/bookign", async (req, res) => {
       const body = req.body;
-      // const result = await RoomBooking.
-      console.log(body);
+      const result = await RoomBooking.insertOne(body);
+      res.send(result);
+    });
+
+    app.get("/getbooking", async (req, res) => {
+      const result = await RoomBooking.find().toArray();
+      res.send(result);
     });
     //Hotel view Pic Start
     app.get("/hotelviewpic", async (req, res) => {
