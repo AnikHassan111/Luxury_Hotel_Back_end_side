@@ -18,6 +18,26 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+//jwt User Varify
+
+const verify = async (req, res, next) => {
+  const token = req.cookies?.token;
+  if (!token) {
+    res.status(401).send({ status: "unAuthorized Accsess", code: "401" });
+    return;
+  }
+  jwt.verify(token, process.env.TOKEN, (err, decode) => {
+    if (err) {
+      res.status(401).send({ status: "unAuthorized Accsess", code: "401" });
+      return;
+    } else {
+      // console.log(decode);
+      req.decode = decode;
+      next();
+    }
+  });
+};
+
 const uri = `mongodb+srv://hotelroomuser:kcR6HdvPRal0Cjcc@cluster0.wnl4pp8.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -75,8 +95,33 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/updateDate/:id", async (req, res) => {
+      const date = req.body;
+      const id = req.params.id;
+      console.log(date);
+      console.log(id);
+      const query = { _id: id };
+      const updateDoc = {
+        $set: {
+          bookingDate: date.date,
+        },
+      };
+      const options = { upsert: true };
+      const result = await RoomBooking.updateOne(query, updateDoc, options);
+      res.send(result);
+    });
     app.get("/getbooking", async (req, res) => {
-      const result = await RoomBooking.find().toArray();
+      const email = req.query.email;
+      console.log(email);
+      const option = { userEmail: email };
+      const result = await RoomBooking.find(option).toArray();
+      res.send(result);
+    });
+
+    app.get("/booknowsection/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await RoomPage.findOne(query);
       res.send(result);
     });
 
