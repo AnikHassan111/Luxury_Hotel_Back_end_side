@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 //jwt User Varify
 
-const verify = async (req, res, next) => {
+const VarifyTo = async (req, res, next) => {
   const token = req.cookies?.token;
   if (!token) {
     res.status(401).send({ status: "unAuthorized Accsess", code: "401" });
@@ -31,7 +31,6 @@ const verify = async (req, res, next) => {
       res.status(401).send({ status: "unAuthorized Accsess", code: "401" });
       return;
     } else {
-      // console.log(decode);
       req.decode = decode;
       next();
     }
@@ -98,8 +97,6 @@ async function run() {
     app.put("/updateDate/:id", async (req, res) => {
       const date = req.body;
       const id = req.params.id;
-      console.log(date);
-      console.log(id);
       const query = { _id: id };
       const updateDoc = {
         $set: {
@@ -110,9 +107,9 @@ async function run() {
       const result = await RoomBooking.updateOne(query, updateDoc, options);
       res.send(result);
     });
-    app.get("/getbooking", async (req, res) => {
+    app.get("/getbooking", VarifyTo, async (req, res) => {
       const email = req.query.email;
-      console.log(email);
+
       const option = { userEmail: email };
       const result = await RoomBooking.find(option).toArray();
       res.send(result);
