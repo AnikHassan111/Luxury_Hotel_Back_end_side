@@ -11,7 +11,10 @@ const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "https://assigment-11-hotelroom-project.web.app",
+      "https://assigment-11-hotelroom-project.firebaseapp.com/",
+    ],
     credentials: true,
   })
 );
