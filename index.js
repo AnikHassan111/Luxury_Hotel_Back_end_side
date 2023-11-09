@@ -13,7 +13,8 @@ app.use(
   cors({
     origin: [
       "https://assigment-11-hotelroom-project.web.app",
-      "https://assigment-11-hotelroom-project.firebaseapp.com/",
+      "https://assigment-11-hotelroom-project.firebaseapp.com",
+      "https://assigment-11-hotelroom-project.web.app",
     ],
     credentials: true,
   })
